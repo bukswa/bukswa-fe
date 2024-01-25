@@ -35,14 +35,43 @@ function Form() {
 }
 ```
 
-#### Some PowerShell Code
+#### Caching expensive calculations
 
-```powershell
-Write-Host "This is a powershell Code block";
+```function TodoList({ todos, filter }) {
+  const [newTodo, setNewTodo] = useState('');
 
-# There are many other languages you can use, but the style has to be loaded first
+  // 🔴 Avoid: redundant state and unnecessary Effect
+  const [visibleTodos, setVisibleTodos] = useState([]);
+  useEffect(() => {
+    setVisibleTodos(getFilteredTodos(todos, filter));
+  }, [todos, filter]);
 
-ForEach ($thing in $things) {
-    Write-Output "It highlights it using the GitHub style"
+  // ...
+}
+```
+
+Instead use this.
+
+```
+function TodoList({ todos, filter }) {
+  const [newTodo, setNewTodo] = useState('');
+  // ✅ This is fine if getFilteredTodos() is not slow.
+  const visibleTodos = getFilteredTodos(todos, filter);
+  // ...
+}
+```
+
+Or use this if you want to memoize the results.
+
+```
+import { useMemo, useState } from 'react';
+
+function TodoList({ todos, filter }) {
+  const [newTodo, setNewTodo] = useState('');
+  const visibleTodos = useMemo(() => {
+    // ✅ Does not re-run unless todos or filter change
+    return getFilteredTodos(todos, filter);
+  }, [todos, filter]);
+  // ...
 }
 ```
