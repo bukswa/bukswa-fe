@@ -36,8 +36,10 @@ function Form() {
 }
 ```
 
+<br />
 
 #### 2. Caching expensive calculations
+
 
 ```function TodoList({ todos, filter }) {
   const [newTodo, setNewTodo] = useState('');
@@ -78,6 +80,7 @@ function TodoList({ todos, filter }) {
 }
 ```
 
+<br />
 
 #### 3. Resetting all state when a prop changes
 
