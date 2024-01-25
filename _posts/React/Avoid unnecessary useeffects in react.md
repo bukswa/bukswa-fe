@@ -1,4 +1,4 @@
-## Avoid unnecessary useffects from react code
+## Avoid unnecessary usEffect from react code
 
 Effects are an escape hatch from the React paradigm. They let you “step outside” of React and synchronize your components with some external system like a non-React widget, network, 
 or the browser DOM. If there is no external system involved (for example, if you want to update a component’s state when some props or state change), you shouldn’t need an Effect. 
