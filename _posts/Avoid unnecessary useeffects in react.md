@@ -6,15 +6,33 @@ Removing unnecessary Effects will make your code easier to follow, faster to run
 
 ---
 
-### This is a header
+### Few Examples
 
-#### Some T-SQL Code
+#### Updating state based on props or state
 
-```tsql
-SELECT This, [Is], A, Code, Block -- Using SSMS style syntax highlighting
-    , REVERSE('abc')
-FROM dbo.SomeTable s
-    CROSS JOIN dbo.OtherTable o;
+```function Form() {
+  const [firstName, setFirstName] = useState('Taylor');
+  const [lastName, setLastName] = useState('Swift');
+
+  // 🔴 Avoid: redundant state and unnecessary Effect
+  const [fullName, setFullName] = useState('');
+  useEffect(() => {
+    setFullName(firstName + ' ' + lastName);
+  }, [firstName, lastName]);
+  // ...
+}
+```
+
+Instead use this.
+
+```
+function Form() {
+  const [firstName, setFirstName] = useState('Taylor');
+  const [lastName, setLastName] = useState('Swift');
+  // ✅ Good: calculated during rendering
+  const fullName = firstName + ' ' + lastName;
+  // ...
+}
 ```
 
 #### Some PowerShell Code
