@@ -8,7 +8,8 @@ Removing unnecessary Effects will make your code easier to follow, faster to run
 
 ### Few Examples
 
-#### Updating state based on props or state
+
+#### 1. Updating state based on props or state
 
 ```function Form() {
   const [firstName, setFirstName] = useState('Taylor');
@@ -35,7 +36,8 @@ function Form() {
 }
 ```
 
-#### Caching expensive calculations
+
+#### 2. Caching expensive calculations
 
 ```function TodoList({ todos, filter }) {
   const [newTodo, setNewTodo] = useState('');
@@ -76,7 +78,8 @@ function TodoList({ todos, filter }) {
 }
 ```
 
-#### Resetting all state when a prop changes
+
+#### 3. Resetting all state when a prop changes
 
 ```
 export default function ProfilePage({ userId }) {
@@ -108,3 +111,81 @@ function Profile({ userId }) {
   // ...
 }
 ```
+
+#### 4. Adjusting some state when a prop changes 
+
+```
+function List({ items }) {
+  const [isReverse, setIsReverse] = useState(false);
+  const [selection, setSelection] = useState(null);
+
+  // 🔴 Avoid: Adjusting state on prop change in an Effect
+  useEffect(() => {
+    setSelection(null);
+  }, [items]);
+  // ...
+}
+```
+
+Instead use this.
+
+```
+function List({ items }) {
+  const [isReverse, setIsReverse] = useState(false);
+  const [selection, setSelection] = useState(null);
+
+  // Better: Adjust the state while rendering
+  const [prevItems, setPrevItems] = useState(items);
+  if (items !== prevItems) {
+    setPrevItems(items);
+    setSelection(null);
+  }
+  // ...
+}
+```
+
+#### 5. Sharing logic between event handlers 
+
+```
+function ProductPage({ product, addToCart }) {
+  // 🔴 Avoid: Event-specific logic inside an Effect
+  useEffect(() => {
+    if (product.isInCart) {
+      showNotification(`Added ${product.name} to the shopping cart!`);
+    }
+  }, [product]);
+
+  function handleBuyClick() {
+    addToCart(product);
+  }
+
+  function handleCheckoutClick() {
+    addToCart(product);
+    navigateTo('/checkout');
+  }
+  // ...
+}
+```
+
+Instead use this.
+
+```
+function ProductPage({ product, addToCart }) {
+  // ✅ Good: Event-specific logic is called from event handlers
+  function buyProduct() {
+    addToCart(product);
+    showNotification(`Added ${product.name} to the shopping cart!`);
+  }
+
+  function handleBuyClick() {
+    buyProduct();
+  }
+
+  function handleCheckoutClick() {
+    buyProduct();
+    navigateTo('/checkout');
+  }
+  // ...
+}
+```
+
