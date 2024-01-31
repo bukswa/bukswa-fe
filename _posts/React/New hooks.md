@@ -31,6 +31,33 @@ function HorizontalRule({ show }) {
 
 ----
 
-#
+## useDeferredValue
+
+`useDeferredValue` is a React Hook that lets you defer updating a part of the UI.
+
+A common alternative UI pattern is to defer updating the list of results and to keep showing the previous results until the new results are ready. 
+Call `useDeferredValue` to pass a deferred version of the query down:
+
+```
+export default function App() {
+  const [query, setQuery] = useState('');
+  const deferredQuery = useDeferredValue(query);
+  return (
+    <>
+      <label>
+        Search albums:
+        <input value={query} onChange={e => setQuery(e.target.value)} />
+      </label>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <SearchResults query={deferredQuery} />
+      </Suspense>
+    </>
+  );
+}
+```
+
+The query will update immediately, so the input will display the new value. 
+However, the `deferredQuery` will keep its previous value until the data has loaded, so SearchResults will show the stale results for a bit.
+
 
 
