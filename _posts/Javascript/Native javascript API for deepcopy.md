@@ -1,6 +1,6 @@
 # Deepcopy using Native Javascript API
 
-### structureClone 
+###  structuredClone
 
 The global structuredClone() method creates a deep clone of a given value using the structured clone algorithm.
 
