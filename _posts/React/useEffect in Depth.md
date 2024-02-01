@@ -11,4 +11,21 @@ Here is a list of few questions which are not well aware by many developers.
 
       **Ans**: If you’re not trying to synchronize with some external system, <u>you probably don’t need an Effect</u>.
 
-3. 
+3. How to add client only run code in react-app where server and client both rendering happens?
+
+     **Ans**:
+
+   ```
+   function MyComponent() {
+    const [didMount, setDidMount] = useState(false);
+    useEffect(() => {
+    setDidMount(true);
+      }, []);
+    
+      if (didMount) {
+        // ... return client-only JSX ...
+      }  else {
+        // ... return initial JSX ...
+      }
+   }
+   ```
