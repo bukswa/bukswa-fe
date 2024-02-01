@@ -8,6 +8,7 @@ The method also allows transferable objects in the original value to be transfer
 Transferred objects are detached from the original object and attached to the new object; they are no longer accessible in the original object.
 
 Syntax
-
+```
 structuredClone(value)
 structuredClone(value, options)
+```
